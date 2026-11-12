@@ -1,0 +1,102 @@
+name: Test swpm-rest-api
+
+# Runs only when started by hand: Actions tab > "Test swpm-rest-api" > Run workflow.
+on:
+  workflow_dispatch:
+    inputs:
+      core_ref:
+        description: Branch, tag or commit of the main Simple Membership plugin to test against
+        required: true
+        default: master
+
+env:
+  ADDON_DIR: 02.API-related-grp/swpm-rest-api
+  DEV_DIR: 02.API-related-grp/swpm-rest-api-dev
+
+jobs:
+  checks:
+    name: Lint and OpenAPI check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@v4
+
+      - name: Set up PHP 7.4 (oldest supported)
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: none
+
+      - name: Lint on PHP 7.4
+        run: find "$ADDON_DIR" "$DEV_DIR" -name '*.php' -not -path '*/vendor/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Set up PHP 8.5 (newest)
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          coverage: none
+
+      - name: Lint on PHP 8.5
+        run: find "$ADDON_DIR" "$DEV_DIR" -name '*.php' -not -path '*/vendor/*' -print0 | xargs -0 -n1 php -l
+
+      - name: OpenAPI file is up to date
+        run: php "$DEV_DIR/bin/generate-openapi.php" --check
+
+  phpunit:
+    name: PHPUnit (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.4']
+
+    services:
+      mysql:
+        image: mariadb:10.6
+        env:
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      WP_TESTS_DIR: /tmp/wordpress-tests-lib
+      WP_CORE_DIR: /tmp/wordpress
+      SWPM_PLUGIN_DIR: ${{ github.workspace }}/simple-membership-core/simple-membership
+
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@v4
+
+      - name: Check out the main Simple Membership plugin
+        uses: actions/checkout@v4
+        with:
+          repository: wp-insider/simple-membership
+          ref: ${{ inputs.core_ref }}
+          path: simple-membership-core
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli
+          tools: composer
+          coverage: none
+
+      - name: Install Subversion (the WordPress test library is downloaded with it)
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - name: Install WordPress and its test library
+        run: bash simple-membership-core/tests/bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 latest
+
+      - name: Install Composer packages
+        working-directory: ${{ env.DEV_DIR }}
+        run: composer install --no-interaction --no-progress
+
+      - name: Run the tests
+        working-directory: ${{ env.DEV_DIR }}
+        run: vendor/bin/phpunit --testdox -c phpunit.xml.dist
