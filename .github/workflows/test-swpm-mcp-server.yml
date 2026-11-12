@@ -1,0 +1,31 @@
+name: Test swpm-mcp-server
+
+# Runs only when started by hand: Actions tab > "Test swpm-mcp-server" > Run workflow.
+on:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    name: MCP server tests (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '24']
+    defaults:
+      run:
+        working-directory: 02.API-related-grp/swpm-mcp-server
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install packages
+        run: npm install --no-audit --no-fund
+
+      - name: Run the tests
+        run: npm test
