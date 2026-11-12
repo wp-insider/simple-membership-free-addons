@@ -27,7 +27,7 @@ Symlink or copy both plugins into `wp-content/plugins/`:
 
 ```
 wp-content/plugins/simple-membership/      <- from the simple-membership repo
-wp-content/plugins/swpm-rest-api/          <- from the simple-membership-addons repo
+wp-content/plugins/swpm-rest-api/          <- from simple-membership-free-addons/02.API-related-grp
 ```
 
 Activate both under **Plugins**.
@@ -39,21 +39,14 @@ Activate both under **Plugins**.
 Worth doing first, since a parse error shows up as a white screen rather than a useful message:
 
 ```bash
-cd simple-membership-addons/swpm-rest-api
+cd simple-membership-free-addons/02.API-related-grp/swpm-rest-api
 find . -name "*.php" -exec php -l {} \;
 ```
 
 Every file should report `No syntax errors detected`.
 
-If you have no local PHP, run it inside the test container from the `simple-membership` repo:
-
-```bash
-docker compose run --rm swpm
-# then, inside the container:
-find /app/../simple-membership-addons/swpm-rest-api -name "*.php" -exec php -l {} \;
-```
-
-(Adjust the path to wherever you mounted the add-ons repo.)
+The "Test swpm-rest-api" GitHub Actions workflow in the free-addons repo also runs this lint, on
+PHP 7.4 and the newest PHP.
 
 ---
 
@@ -619,10 +612,10 @@ Tick **Regenerate API Key**, save, then retry a request with the old key.
 
 ## Next: automated tests
 
-The manual pass above is what the PHPUnit suite should eventually encode. The tests will live in
-the `swpm-rest-api-dev` folder beside the add-on, so they stay out of the deployed zip, and run in
-the main plugin's Docker setup with the add-ons repo mounted. They will call the routes in-process
-with `rest_get_server()->dispatch( $request )`, so no web server is needed.
+Most of this manual pass is also covered by the PHPUnit tests in `swpm-rest-api-dev/tests/`. Run
+them from the **Test swpm-rest-api** workflow in the repo's Actions tab; see the dev folder's
+README. The manual checks that still matter after a change are the ones the tests cannot reach:
+logging in on the front end, the admin screens, and real PayPal and Stripe sandbox payments.
 
 ---
 

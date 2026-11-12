@@ -1,0 +1,19 @@
+{
+    "name": "simple-membership/swpm-rest-api-dev",
+    "description": "Development tooling and tests for the Simple Membership REST API add-on.",
+    "license": "GPL-2.0-or-later",
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "yoast/phpunit-polyfills": "^4.0"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --testdox -c phpunit.xml.dist",
+        "openapi": "php bin/generate-openapi.php",
+        "openapi:check": "php bin/generate-openapi.php --check"
+    }
+}
