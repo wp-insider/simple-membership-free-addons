@@ -148,6 +148,8 @@ transactions, listing, searching and deletion, over the standard REST infrastruc
   the swpm_rest_api_controllers filter with the swpm_rest_api_register_routes action.
 * Added configurable rate limits for read requests, write requests and failed API keys.
 * `docs/openapi.yaml` is now generated from the route definitions.
+* Fixed membership_level_name coming back empty for a level created earlier in the same PHP request
+  (for example, in a REST batch request).
 
 = 1.0 =
 * First release.

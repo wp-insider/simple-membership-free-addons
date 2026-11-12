@@ -64,10 +64,11 @@ function swpm_rest_api_register_routes() {
 	do_action( 'swpm_rest_api_register_routes', $router );
 
 	$router->register();
-
-	add_filter( 'rest_post_dispatch', array( 'SWPM_REST_API_Rate_Limiter', 'add_response_headers' ) );
 }
 add_action( 'rest_api_init', 'swpm_rest_api_register_routes' );
+
+//Adds the rate limit headers to API responses. A permission callback cannot reach the response.
+add_filter( 'rest_post_dispatch', array( 'SWPM_REST_API_Rate_Limiter', 'add_response_headers' ) );
 
 //Add settings link in the plugins listing page
 function swpm_rest_api_add_settings_link( $links, $file ) {

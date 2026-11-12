@@ -630,7 +630,9 @@ class SWPM_REST_API_Members_Controller extends SWPM_REST_API_Controller_Base {
 	 * @return string
 	 */
 	protected function get_level_name( $level_id ) {
-		if ( is_null( $this->level_name_map ) ) {
+		//The controller can serve several requests in one PHP request (a REST batch request, for
+		//example), so a level created after the map was built must trigger a reload.
+		if ( is_null( $this->level_name_map ) || ! isset( $this->level_name_map[ $level_id ] ) ) {
 			global $wpdb;
 
 			//SwpmMembershipLevelUtils::get_all_membership_levels_in_array() is not used here because
