@@ -1,7 +1,7 @@
 === Simple Membership WP user Import ===
 Contributors: smp7, wp.insider
 Donate link: https://simple-membership-plugin.com/
-Tags: users, wp user, import, export, member, members, membership, access, level
+Tags: users, wp user, import, export, member, members
 Requires at least: 4.0
 Tested up to: 7.1
 Stable tag: 1.9.3
@@ -18,6 +18,8 @@ You will be able to select which membership access level a user goes into when i
 This addon requires the [Simple Membership Plugin](https://wordpress.org/plugins/simple-membership/).
 
 After you install this addon, go to the import users interface and select the option to import.
+
+For step-by-step instructions, see the [WP User Import addon documentation](https://simple-membership-plugin.com/import-existing-wordpress-users-simple-membership-plugin/).
 
 == Installation ==
 

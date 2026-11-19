@@ -26,6 +26,7 @@ Each addon is a small, standalone WordPress plugin that extends Simple Membershi
 | Partial Protection | [`swpm-partial-protection`](swpm-partial-protection/) | Protect or hide specific sections of a post or page, so you can show teaser content to everyone and keep the rest for members. | [Usage guide](https://simple-membership-plugin.com/apply-partial-section-protection/) |
 | Show Member Info | [`swpm-show-member-info`](swpm-show-member-info/) | Display member details (such as name, level or expiry) on your site using shortcodes. | [Usage guide](https://simple-membership-plugin.com/simple-membership-addon-show-member-info/) |
 | Social Login | [`swpm-social-login`](swpm-social-login/) | Let members register and log in with their Google or Facebook account. | [Usage guide](https://simple-membership-plugin.com/simple-membership-social-login-addon/) |
+| WP User Import | [`swpm-wp-import`](swpm-wp-import/) | Import your existing WordPress users as members, either all at once or selectively, with a chosen membership level, account state and start date. | [Usage guide](https://simple-membership-plugin.com/import-existing-wordpress-users-simple-membership-plugin/) |
 | Zapier Webhook Integration | [`swpm-zapier-hook-integration`](swpm-zapier-hook-integration/) | Send a new member's username, email and name to a Zapier webhook when they complete registration. Set your webhook URL in Settings → Addon Settings. | [Usage guide](https://simple-membership-plugin.com/zapier-webhook-integration-for-simple-membership-plugin/) |
 
 ### CAPTCHA Addons
