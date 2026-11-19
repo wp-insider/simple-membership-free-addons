@@ -2,7 +2,7 @@
 /*
 Plugin Name: Simple Membership WP User Import
 Plugin URI: https://simple-membership-plugin.com/import-existing-wordpress-users-simple-membership-plugin/
-Description: Addon for importing existing Wordpress users to Simple Membership
+Description: Addon for importing existing WordPress users to Simple Membership
 Author: wp.insider
 Author URI: https://simple-membership-plugin.com/
 Version: 1.9.3
