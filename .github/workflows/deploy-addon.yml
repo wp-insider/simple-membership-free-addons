@@ -24,6 +24,7 @@ on:
           - swpm-partial-protection
           - swpm-show-member-info
           - swpm-social-login
+          - swpm-wp-import
           - swpm-zapier-hook-integration
           - 01.CAPTCHA-related-addons-grp/swpm-cloudflare-turnstile
           - 01.CAPTCHA-related-addons-grp/swpm-recaptcha
